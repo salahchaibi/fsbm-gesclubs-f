@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API = "http://localhost:8000/api";
-const STORAGE = "http://localhost:8000/storage";
+const API = "https://inspiring-creation-production-8d2c.up.railway.app/api";
+const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
 
 const iStyle = {
   width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0",
