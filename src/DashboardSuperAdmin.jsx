@@ -306,7 +306,6 @@ function TabPageAccueil({ headers }) {
     { title: "Rayonnement Scientifique et Culturel", text: "À travers conférences, ateliers et projets innovants, les clubs contribuent à promouvoir le savoir." },
     { title: "Animation de la Vie Universitaire", text: "Les activités des clubs enrichissent la vie étudiante par des événements artistiques, sportifs et sociaux." },
   ]);
-
   useEffect(() => {
     fetch(`${API}/page-accueil`, { headers })
       .then(r => r.json())
@@ -317,19 +316,21 @@ function TabPageAccueil({ headers }) {
         if (data.organigramme) setOrgForm(data.organigramme);
         if (data.chiffres) setChiffresForm(data.chiffres);
         if (data.objectifs) setObjectifsForm(data.objectifs);
-        if (data.doyen?.photo) setDoyenPhotoPreview(`${STORAGE}/${data.doyen.photo}`);
-        if (data.vice_doyen?.photo) setViceDoyenPhotoPreview(`${STORAGE}/${data.vice_doyen.photo}`);
+        const toUrl = (p) => p?.startsWith('http') ? p : `${STORAGE}/${p}`;
+        if (data.doyen?.photo) setDoyenPhotoPreview(toUrl(data.doyen.photo));
+        if (data.vice_doyen?.photo) setViceDoyenPhotoPreview(toUrl(data.vice_doyen.photo));
         if (data.organigramme) {
           const op = {};
-          if (data.organigramme.direction?.[0]?.photo) op.doyen_preview = `${STORAGE}/${data.organigramme.direction[0].photo}`;
-          if (data.organigramme.vice_doyens?.[0]?.photo) op.vd1_preview = `${STORAGE}/${data.organigramme.vice_doyens[0].photo}`;
-          if (data.organigramme.vice_doyens?.[1]?.photo) op.vd2_preview = `${STORAGE}/${data.organigramme.vice_doyens[1].photo}`;
-          if (data.organigramme.responsables?.[0]?.photo) op.resp1_preview = `${STORAGE}/${data.organigramme.responsables[0].photo}`;
-          if (data.organigramme.responsables?.[1]?.photo) op.resp2_preview = `${STORAGE}/${data.organigramme.responsables[1].photo}`;
+          if (data.organigramme.direction?.[0]?.photo) op.doyen_preview = toUrl(data.organigramme.direction[0].photo);
+          if (data.organigramme.vice_doyens?.[0]?.photo) op.vd1_preview = toUrl(data.organigramme.vice_doyens[0].photo);
+          if (data.organigramme.vice_doyens?.[1]?.photo) op.vd2_preview = toUrl(data.organigramme.vice_doyens[1].photo);
+          if (data.organigramme.responsables?.[0]?.photo) op.resp1_preview = toUrl(data.organigramme.responsables[0].photo);
+          if (data.organigramme.responsables?.[1]?.photo) op.resp2_preview = toUrl(data.organigramme.responsables[1].photo);
           setOrgPhotos(prev => ({ ...prev, ...op }));
         }
       }).catch(() => {});
   }, []);
+
 
   const handleOrgPhotoChange = (key, file) => {
     if (!file) return;
