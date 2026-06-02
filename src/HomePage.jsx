@@ -66,7 +66,7 @@ export default function HomePage() {
         const recent = list.slice(-5).reverse();
         setActualites(recent.map(a => ({
          id: a.id, titre: a.titre, resume: a.contenu,
-         image: a.image ? `${STORAGE}/${a.image}` : null,
+         image: a.image ? (a.image.startsWith('http') ? a.image : `${STORAGE}/${a.image}`) : null,
          categorie: a.categorie || "",
       })));
       })
