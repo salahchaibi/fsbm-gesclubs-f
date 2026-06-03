@@ -140,7 +140,7 @@ export default function ClubDetail() {
     </div>
   );
 
-  const clubLogo = club.logo ? `${STORAGE}/${club.logo}` : null;
+  const clubLogo = club.logo ? (club.logo.startsWith('http') ? club.logo : `${STORAGE}/${club.logo}`) : null;
   const couleur = domaineColor[club.domaine] || { light: "#dde8f7", dark: "#0d2d5e", grad: "135deg, #0d2d5e, #1a4a8a" };
 
   let membres = [];
