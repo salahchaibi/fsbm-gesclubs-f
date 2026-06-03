@@ -52,13 +52,11 @@ export default function ActualiteDetail() {
 
   useEffect(() => {
     setLoading(true);
-    // Charger l'actualité
     fetch(`${API}/actualites/${id}`)
       .then(r => r.json())
       .then(data => { setActu(data); setLoading(false); })
       .catch(() => setLoading(false));
 
-    // Charger autres actualités
     fetch(`${API}/actualites`)
       .then(r => r.json())
       .then(data => {
@@ -75,8 +73,7 @@ export default function ActualiteDetail() {
   };
 
   const getClubLogo = (club) => {
-    if (!club) return null;
-    if (!club.logo) return null;
+    if (!club || !club.logo) return null;
     if (club.logo.startsWith("http")) return club.logo;
     return `${STORAGE}/${club.logo}`;
   };
@@ -111,12 +108,12 @@ export default function ActualiteDetail() {
   return (
     <div style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", backgroundColor: "#f8fafd", minHeight: "100vh" }}>
 
-      {/* ===== NAVBAR ===== */}
+      {/* NAVBAR */}
       <header style={{ position: "sticky", top: 0, zIndex: 1000, backgroundColor: "#ffffff", borderBottom: "1px solid #e2e8f0", boxShadow: "0 2px 10px rgba(0,0,0,0.08)" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "72px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer" }} onClick={() => navigate("/")}>
             <img src={logo} alt="Logo" style={{ width: "150px", height: "60px", objectFit: "contain" }} />
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: "1.2" }}>
+            <div className="actu-navbar-text" style={{ display: "flex", flexDirection: "column", lineHeight: "1.2" }}>
               <span style={{ fontSize: "16px", fontWeight: "800", color: "#2a5ba5" }}>Découvrez les clubs</span>
               <span style={{ fontSize: "13px", fontWeight: "600", color: "#9fc0f1" }}>de la Faculté des Sciences Ben M'Sik</span>
             </div>
@@ -180,31 +177,28 @@ export default function ActualiteDetail() {
         )}
       </header>
 
-      {/* ===== BREADCRUMB ===== */}
+      {/* BREADCRUMB */}
       <div style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #f0f4f8", padding: "14px 8%" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, flexWrap: "wrap" }}>
           <span style={{ color: "#94a3b8", cursor: "pointer" }} onClick={() => navigate("/")}>Accueil</span>
           <span style={{ color: "#cbd5e1" }}>›</span>
           <span style={{ color: "#94a3b8", cursor: "pointer" }} onClick={() => navigate("/actualites")}>Actualités</span>
           <span style={{ color: "#cbd5e1" }}>›</span>
-          <span style={{ color: "#0d2d5e", fontWeight: 600, maxWidth: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{actu.titre}</span>
+          <span style={{ color: "#0d2d5e", fontWeight: 600, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{actu.titre}</span>
         </div>
       </div>
 
-      {/* ===== CONTENU PRINCIPAL ===== */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 8%", display: "grid", gridTemplateColumns: "1fr 360px", gap: 40, alignItems: "start" }}>
+      {/* CONTENU PRINCIPAL */}
+      <div className="actu-main-grid" style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 8%", display: "grid", gridTemplateColumns: "1fr 360px", gap: 40, alignItems: "start" }}>
 
-        {/* ── Colonne gauche : article ── */}
+        {/* Colonne gauche : article */}
         <div>
-
-          {/* Image principale */}
           {imgSrc && (
-            <div style={{ borderRadius: 20, overflow: "hidden", marginBottom: 36, boxShadow: "0 8px 32px rgba(13,45,94,0.12)", height: 420 }}>
+            <div style={{ borderRadius: 20, overflow: "hidden", marginBottom: 36, boxShadow: "0 8px 32px rgba(13,45,94,0.12)", height: 320 }}>
               <img src={imgSrc} alt={actu.titre} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
             </div>
           )}
 
-          {/* Tags */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
             {actu.categorie && (
               <span style={{ background: couleur, color: "white", fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 20 }}>
@@ -219,40 +213,31 @@ export default function ActualiteDetail() {
             )}
           </div>
 
-          {/* Titre */}
-          <h1 style={{ color: "#0d2d5e", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, lineHeight: 1.3, margin: "0 0 24px 0" }}>
+          <h1 style={{ color: "#0d2d5e", fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 900, lineHeight: 1.3, margin: "0 0 24px 0" }}>
             {actu.titre}
           </h1>
 
-          {/* Séparateur décoratif */}
           <div style={{ width: 60, height: 4, background: "linear-gradient(90deg, #0d2d5e, #e07b20)", borderRadius: 2, marginBottom: 32 }}></div>
 
-          {/* Contenu texte */}
           <div style={{ color: "#374151", fontSize: 16, lineHeight: 1.9, whiteSpace: "pre-wrap" }}>
             {actu.contenu}
           </div>
 
-          {/* ── CARTE CLUB ── */}
+          {/* CARTE CLUB */}
           {club && (
             <div style={{ marginTop: 48 }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>
                 À propos du club
               </div>
               <div style={{ background: "linear-gradient(135deg, #f8fafd, #eef4ff)", border: "1.5px solid #dde8f7", borderRadius: 20, padding: 28, position: "relative", overflow: "hidden" }}>
-                {/* Déco */}
                 <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(13,45,94,0.04)", pointerEvents: "none" }}></div>
-
                 <div style={{ display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
-
-                  {/* Logo du club */}
                   <div style={{ width: 80, height: 80, borderRadius: 16, overflow: "hidden", border: "3px solid #dde8f7", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 16px rgba(13,45,94,0.1)" }}>
                     {clubLogo
                       ? <img src={clubLogo} alt={club.nom} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                       : <span style={{ fontSize: 28, fontWeight: 900, color: "#0d2d5e" }}>{(club.nom || "C")[0].toUpperCase()}</span>
                     }
                   </div>
-
-                  {/* Infos club */}
                   <div style={{ flex: 1, minWidth: 200 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" }}>
                       <h3 style={{ color: "#0d2d5e", fontSize: 20, fontWeight: 900, margin: 0 }}>{club.nom}</h3>
@@ -262,44 +247,30 @@ export default function ActualiteDetail() {
                         </span>
                       )}
                     </div>
-
                     {club.description && (
                       <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.7, margin: "0 0 16px 0" }}>
                         {club.description.length > 180 ? club.description.substring(0, 180) + "..." : club.description}
                       </p>
                     )}
-
-                    {/* Boutons actions */}
                     <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-
-                      {/* Lien Instagram */}
                       {club.instagram && (
                         <a href={club.instagram.startsWith("http") ? club.instagram : `https://www.instagram.com/${club.instagram.replace("@","")}`}
                           target="_blank" rel="noreferrer"
                           style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 18px", borderRadius: 10, textDecoration: "none", fontWeight: 700, fontSize: 13, background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)", color: "white", boxShadow: "0 4px 14px rgba(131,58,180,0.3)", transition: "opacity 0.2s, transform 0.2s" }}
                           onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                           onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}>
-                          {/* Instagram SVG */}
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                          </svg>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                           Instagram
                         </a>
                       )}
-
-                      {/* Lien page du club */}
-                      <button
-                        onClick={() => navigate(`/clubs/${club.id}`)}
+                      <button onClick={() => navigate(`/clubs/${club.id}`)}
                         style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 18px", borderRadius: 10, fontWeight: 700, fontSize: 13, background: "linear-gradient(135deg, #0d2d5e, #1a4a8a)", color: "white", border: "none", cursor: "pointer", boxShadow: "0 4px 14px rgba(13,45,94,0.25)", transition: "opacity 0.2s, transform 0.2s" }}
                         onMouseEnter={e => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                         onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}>
                         <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
                         Voir la page du club
                       </button>
-
                     </div>
-
-                    {/* Email du club */}
                     {club.email && (
                       <div style={{ marginTop: 14, display: "flex", alignItems: "center", gap: 8, color: "#64748b", fontSize: 13 }}>
                         <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
@@ -312,7 +283,6 @@ export default function ActualiteDetail() {
             </div>
           )}
 
-          {/* Bouton retour */}
           <div style={{ marginTop: 40, paddingTop: 32, borderTop: "1px solid #f0f4f8" }}>
             <button onClick={() => navigate("/actualites")}
               style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px", borderRadius: 10, background: "#f0f4ff", color: "#0d2d5e", border: "1.5px solid #dde8f7", fontWeight: 700, fontSize: 14, cursor: "pointer", transition: "background 0.2s" }}
@@ -324,10 +294,8 @@ export default function ActualiteDetail() {
           </div>
         </div>
 
-        {/* ── Colonne droite : sidebar ── */}
-        <div style={{ position: "sticky", top: 96 }}>
-
-          {/* Info rapide */}
+        {/* Colonne droite : sidebar */}
+        <div className="actu-sidebar" style={{ position: "sticky", top: 96 }}>
           <div style={{ background: "white", borderRadius: 16, padding: 24, border: "1px solid #f0f4f8", boxShadow: "0 2px 12px rgba(13,45,94,0.06)", marginBottom: 24 }}>
             <div style={{ fontSize: 12, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Informations</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -367,7 +335,6 @@ export default function ActualiteDetail() {
             </div>
           </div>
 
-          {/* Autres actualités */}
           {autresActus.length > 0 && (
             <div style={{ background: "white", borderRadius: 16, padding: 24, border: "1px solid #f0f4f8", boxShadow: "0 2px 12px rgba(13,45,94,0.06)" }}>
               <div style={{ fontSize: 12, fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Autres actualités</div>
@@ -404,14 +371,20 @@ export default function ActualiteDetail() {
 
       <style>{`
         @keyframes dropFade { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 900px) {
+          nav { display: none !important; }
+          .hamburger-btn { display: flex !important; }
+          .actu-navbar-text { display: none !important; }
+          .actu-main-grid { grid-template-columns: 1fr !important; }
+          .actu-sidebar { position: static !important; }
+        }
         @media (max-width: 768px) {
           nav { display: none !important; }
           .hamburger-btn { display: flex !important; }
-        }
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: 1fr 360px"] {
-            grid-template-columns: 1fr !important;
-          }
+          .actu-navbar-text { display: none !important; }
+          .actu-main-grid { grid-template-columns: 1fr !important; padding: 24px 20px !important; }
+          .actu-sidebar { position: static !important; }
         }
         * { box-sizing: border-box; } body { margin: 0; }
       `}</style>
