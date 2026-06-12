@@ -513,28 +513,7 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-          <div>
-       <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Équipe de développement</h4>
-       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-       {[
-        { nom: "Douaa Naggour",  role: "Étudiante 3ème année Dev. Info." },
-        { nom: "Hania M'lissa",  role: "Étudiante 3ème année Dev. Info." },
-        { nom: "Pr. Hafsa Ouchra",   role: "Encadrante pédagogique" },
-        { nom: "Pr. Mohamed Ait Daoud",   role: "co-encadrant pédagogique" },
-        { nom: "Mr. Said Chaibi",    role: "Encadrant professionnel" },
-      ].map(p => (
-      <div key={p.nom} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, #1a4a8a, #0d2d5e)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <span style={{ fontSize: 14, fontWeight: 800, color: "#9fc0f1" }}>{p.nom.charAt(0)}</span>
-        </div>
-        <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#e2e8f0" }}>{p.nom}</div>
-          <div style={{ fontSize: 11, color: "#475569" }}>{p.role}</div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
+          
           <div>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Contact</h4>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
