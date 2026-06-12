@@ -479,7 +479,7 @@ export default function HomePage() {
 
       {/* ── FOOTER ── */}
       <footer style={{ background: "#0a2548", color: "#94a3b8", padding: "72px 8% 0" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 48, paddingBottom: 56 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 48, paddingBottom: 56 }}>
           <div>
             <img src={logo} alt="FSBM" style={{ height: 48, objectFit: "contain", filter: "brightness(0) invert(1)", marginBottom: 16 }} />
             <p style={{ fontSize: 14, lineHeight: 1.8, color: "#64748b", margin: "0 0 24px" }}>La FSBM, une faculté qui valorise le talent, la créativité et l'engagement de ses étudiants.</p>
