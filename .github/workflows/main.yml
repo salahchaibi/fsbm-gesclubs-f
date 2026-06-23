@@ -14,20 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Install node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: yarn
+          check-latest: true
 
-      - name: Enable Corepack and Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@stable --activate
-          yarn --version
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: Create deployment directory
-        run: mkdir -p /host-web-directory/front-version
+        run: mkdir -p /host-web-directory/front-end
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -40,5 +37,5 @@ jobs:
 
       - name: Copy build to host directory
         run: |
-          rm -rf /host-web-directory/front-build/*
-          cp -r dist/* /host-web-directory/front-build/
+          rm -rf /host-web-directory/front-end/*
+          cp -r dist/* /host-web-directory/front-end/
