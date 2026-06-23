@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -17,11 +17,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: yarn
 
-      - name: Enable Corepack 
-        run: corepack enable
+      - name: Enable Corepack and Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@stable --activate
+          yarn --version
+
+      - name: Create deployment directory
+        run: mkdir -p /host-web-directory/front-version
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -31,8 +37,8 @@ jobs:
 
       - name: Build project
         run: yarn build
-        
-      - name: Copy build 
+
+      - name: Copy build to host directory
         run: |
           rm -rf /host-web-directory/front-build/*
-          cp -r dist/* /host-web-directory/front-build/   
+          cp -r dist/* /host-web-directory/front-build/
