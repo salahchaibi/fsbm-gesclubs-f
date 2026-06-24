@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/api";
-const IMG = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const STORAGE = `${BACKEND_URL}/api`;
+const IMG = `${BACKEND_URL}/storage`;
 
 const CATEGORIES = ["Toutes", "Formation", "Culturel", "Caravane", "Sport", "Workshops", "Événement", "Scientifique"];
 const PER_PAGE = 6;

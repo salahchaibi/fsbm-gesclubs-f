@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 
-const API = "https://inspiring-creation-production-8d2c.up.railway.app/api";
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const API = `${BACKEND_URL}/api`;
+const STORAGE = `${BACKEND_URL}/storage`;
 
 const chiffresDefaut = [
   { valeur: 6, label: "Scientifiques & Techniques", desc: "Clubs de sciences et technologies", icon: "🔬" },
@@ -25,7 +25,7 @@ const scrollTo = (id) => {
 };
 
 const Avatar = ({ nom, photo, size = 120, borderColor = "#fff", fontSize }) => {
-  const STORAGE_URL = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+  const STORAGE_URL = `${BACKEND_URL}/storage`;
   const fs = fontSize || Math.round(size * 0.36);
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", border: `4px solid ${borderColor}`, background: "linear-gradient(135deg, #1a4a8a, #0d2d5e)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -569,7 +569,7 @@ function Connector() {
 }
 
 function OrgCard({ person, badge, badgeColor, niveau }) {
-  const STORAGE_URL = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+  const STORAGE_URL = `${BACKEND_URL}/storage`;
   const sizes = { top: 120, mid: 100, low: 80 };
   const cardWidths = { top: 300, mid: 270, low: 250 };
   const size = sizes[niveau];
@@ -595,6 +595,4 @@ function OrgCard({ person, badge, badgeColor, niveau }) {
   );
   
 }
-
-
 

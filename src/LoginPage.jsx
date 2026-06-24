@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "./assets/LOGO.png";
- 
+
 export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
@@ -15,7 +15,7 @@ export default function LoginPage({ onLogin }) {
     setLoading(true);
     setErreur("");
     try {
-      const res = await axios.post("https://inspiring-creation-production-8d2c.up.railway.app/api/login", { email, motDePasse });
+      const res = await axios.post(`${BACKEND_URL}/api/login`, { email, motDePasse });
       const { token, utilisateur } = res.data;
       localStorage.setItem("token", token);
       onLogin(utilisateur);

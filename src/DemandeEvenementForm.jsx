@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
  
-const API = "https://inspiring-creation-production-8d2c.up.railway.app/api";
+const API = `${BACKEND_URL}/api`;
  
 const iStyle = {
   width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0",

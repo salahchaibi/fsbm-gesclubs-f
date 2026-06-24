@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
  
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const STORAGE = `${BACKEND_URL}/storage`;
  
 const DOMAINES = ["Tous", "Scientifique", "Culturel", "Entrepreneuriat", "Humanitaire", "Sport"];
  
@@ -50,7 +50,7 @@ export default function ClubsPage() {
   };
  
   useEffect(() => {
-    fetch("https://inspiring-creation-production-8d2c.up.railway.app/api/clubs")
+    fetch(`${BACKEND_URL}/api/clubs`)
       .then(res => res.json())
       .then(data => { setClubs(Array.isArray(data) ? data : data.data || []); setLoading(false); })
       .catch(() => setLoading(false));
@@ -215,7 +215,7 @@ export default function ClubsPage() {
                     {/* Logo */}
                     <div style={{ width: "96px", height: "96px", borderRadius: "50%", overflow: "hidden", backgroundColor: "#f0f4ff", border: `3px solid ${couleur.bg}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 4px 16px rgba(13,45,94,0.08)" }}>
                       {club.logo ? (
-                    <img src={club.logo.startsWith('http') ? club.logo : `https://inspiring-creation-production-8d2c.up.railway.app/storage/${club.logo}`} alt={club.nom} style={{ width: "100%", height: "100%", objectFit: "cover" }} />) : (
+                    <img src={club.logo.startsWith('http') ? club.logo : `${STORAGE}/${club.logo}`} alt={club.nom} style={{ width: "100%", height: "100%", objectFit: "cover" }} />) : (
                      <span style={{ fontSize: "36px", fontWeight: "900", color: "#2a5ba5" }}>{club.nom.charAt(0)}</span>
                         )}
                     </div>

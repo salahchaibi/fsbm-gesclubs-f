@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const STORAGE = `${BACKEND_URL}/storage`;
 
 const domaineColor = {
   Scientifique:    { light: "#dde8f7", dark: "#2a5ba5",  grad: "135deg, #2a5ba5, #1a4a8a" },
@@ -58,12 +58,12 @@ export default function ClubDetail() {
   };
 
   useEffect(() => {
-    fetch(`https://inspiring-creation-production-8d2c.up.railway.app/api/clubs/${id}`)
+    fetch(`${BACKEND_URL}/api/clubs/${id}`)
       .then(res => { if (!res.ok) { setNotFound(true); setLoading(false); return null; } return res.json(); })
       .then(data => { if (data) { setClub(data); setLoading(false); } })
       .catch(() => { setNotFound(true); setLoading(false); });
 
-    fetch(`https://inspiring-creation-production-8d2c.up.railway.app/api/evenements`)
+    fetch(`${BACKEND_URL}/api/evenements`)
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : data.data || [];
@@ -87,7 +87,7 @@ export default function ClubDetail() {
       fd.append("club_id", id);
       if (carteEtudiant) fd.append("carte_etudiant", carteEtudiant);
 
-      const res = await fetch("https://inspiring-creation-production-8d2c.up.railway.app/api/demandes-adhesion", {
+      const res = await fetch(`${BACKEND_URL}/api/demandes-adhesion`, {
         method: "POST",
         body: fd,
       });
@@ -108,7 +108,7 @@ export default function ClubDetail() {
     e.preventDefault();
     setMsgStatus("loading");
     try {
-      const res = await fetch("https://inspiring-creation-production-8d2c.up.railway.app/api/messages-club", {
+      const res = await fetch(`${BACKEND_URL}/api/messages-club`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...msgForm, club_id: id }),

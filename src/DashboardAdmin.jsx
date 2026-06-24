@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemandeEvenementForm from "./DemandeEvenementForm";
 
-const API = "https://inspiring-creation-production-8d2c.up.railway.app/api";
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const API = `${BACKEND_URL}/api`;
+const STORAGE = `${BACKEND_URL}/storage`;
 
 const ROLES_BUREAU = ["Président", "Vice-président", "Secrétaire", "Trésorier", "Responsable Communication", "Responsable Événements", "Membre"];
 

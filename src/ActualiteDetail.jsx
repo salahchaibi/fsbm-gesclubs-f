@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 
-const API = "https://inspiring-creation-production-8d2c.up.railway.app/api";
-const STORAGE = "https://inspiring-creation-production-8d2c.up.railway.app/storage";
+const API = `${BACKEND_URL}/api`;
+const STORAGE = `${BACKEND_URL}/storage`;
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
