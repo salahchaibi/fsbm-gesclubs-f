@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/LOGO.png";
+import { getInitialData } from "./ssrData";
 
-const API = `${BACKEND_URL}/api`;
-const STORAGE = `${BACKEND_URL}/storage`;
+const API = "/api";
+const STORAGE = `${APP_URL}/storage`;
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
@@ -21,11 +22,13 @@ const categorieColor = {
 };
 
 export default function ActualiteDetail() {
+  const initialData = getInitialData().actualiteDetail || {};
   const { id } = useParams();
   const navigate = useNavigate();
-  const [actu, setActu] = useState(null);
-  const [autresActus, setAutresActus] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const hasInitial = String(initialData.id) === String(id) && initialData.actu;
+  const [actu, setActu] = useState(hasInitial ? initialData.actu : null);
+  const [autresActus, setAutresActus] = useState(hasInitial ? (initialData.autresActus || []) : []);
+  const [loading, setLoading] = useState(!hasInitial);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -51,6 +54,7 @@ export default function ActualiteDetail() {
   };
 
   useEffect(() => {
+    if (hasInitial) return;
     setLoading(true);
     fetch(`${API}/actualites/${id}`)
       .then(r => r.json())
@@ -64,7 +68,7 @@ export default function ActualiteDetail() {
         setAutresActus(list.filter(a => String(a.id) !== String(id)).slice(0, 3));
       })
       .catch(() => {});
-  }, [id]);
+  }, [id, hasInitial]);
 
   const getImage = (img) => {
     if (!img) return null;

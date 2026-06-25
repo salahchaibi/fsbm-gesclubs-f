@@ -2,8 +2,8 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 
-ARG BACKEND_URL=""
-ENV BACKEND_URL=${BACKEND_URL}
+ARG APP_URL=""
+ENV APP_URL=${APP_URL}
 
 COPY package.json yarn.lock ./
 
@@ -13,10 +13,16 @@ COPY . .
 
 RUN yarn build
 
-FROM nginx:alpine
+FROM node:22-alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-EXPOSE 80
+ENV NODE_ENV=production
+ENV PORT=3000
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=build /app/dist ./dist
+COPY server.js ./server.js
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

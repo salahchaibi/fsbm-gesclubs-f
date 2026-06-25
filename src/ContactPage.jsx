@@ -39,7 +39,7 @@ export default function ContactPage() {
   const handleSubmit = async () => {
   if (!form.prenom || !form.nom || !form.email || !form.message) return;
   try {
-    await fetch(`${BACKEND_URL}/api/contact`, {
+    await fetch(`/api/contact`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getInitialData } from "./ssrData";
 
-const API = `${BACKEND_URL}/api`;
-const STORAGE = `${BACKEND_URL}/storage`;
+const API = "/api";
+const STORAGE = `${APP_URL}/storage`;
 
 const iStyle = {
   width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0",
@@ -586,14 +587,15 @@ const TabIcon = ({ icon }) => {
 // COMPOSANT PRINCIPAL
 // ─────────────────────────────────────────────────────────────────────────────
 export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
+  const initialData = getInitialData().dashboardSuperAdmin || {};
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  const [clubs, setClubs] = useState([]);
-  const [evenements, setEvenements] = useState([]);
-  const [actualites, setActualites] = useState([]);
-  const [comptes, setComptes] = useState([]);
-  const [demandesEvt, setDemandesEvt] = useState([]);
+  const [clubs, setClubs] = useState(Array.isArray(initialData.clubs) ? initialData.clubs : []);
+  const [evenements, setEvenements] = useState(Array.isArray(initialData.evenements) ? initialData.evenements : []);
+  const [actualites, setActualites] = useState(Array.isArray(initialData.actualites) ? initialData.actualites : []);
+  const [comptes, setComptes] = useState(Array.isArray(initialData.comptes) ? initialData.comptes : []);
+  const [demandesEvt, setDemandesEvt] = useState(Array.isArray(initialData.demandesEvt) ? initialData.demandesEvt : []);
 
   const [evtMsg, setEvtMsg] = useState({ text: "", type: "" });
   const [clubMsg, setClubMsg] = useState({ text: "", type: "" });
@@ -620,12 +622,17 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
   const [actImagePreview, setActImagePreview] = useState(null);
   const actImageRef = useRef();
 
-  const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = {};
 
   useEffect(() => {
-    if (!utilisateur) { navigate("/login"); return; }
+    if (utilisateur === null) { navigate("/login"); return; }
+    if (!utilisateur) return;
+    if (Array.isArray(initialData.clubs) && Array.isArray(initialData.evenements) && Array.isArray(initialData.actualites) && Array.isArray(initialData.comptes) && Array.isArray(initialData.demandesEvt)) return;
     fetchAll();
+  }, [utilisateur]);
+
+  useEffect(() => {
+    if (!utilisateur) return;
     setProfilForm({ nom: utilisateur?.nom || "", prenom: utilisateur?.prenom || "", email: utilisateur?.email || "", motDePasse: "" });
   }, [utilisateur]);
 
@@ -692,11 +699,19 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
   };
   const supprimerDemandeEvt = async (id) => { if (!window.confirm("Supprimer ?")) return; try { await axios.delete(`${API}/demandes-evenement/${id}`, { headers }); setDemandesEvt(prev => prev.filter(d => d.id !== id)); } catch { alert("Erreur."); } };
 
-  const handleLogout = () => { localStorage.removeItem("token"); onLogout && onLogout(); navigate("/login"); };
+  const handleLogout = async () => { await onLogout?.(); navigate("/login"); };
 
   const evtEnAttente = evenements.filter(e => e.statut === "en_attente").length;
   const evtValides = evenements.filter(e => e.statut === "valide").length;
   const demandesEnAttente = demandesEvt.filter(d => !d.statut || d.statut === "en_attente").length;
+
+  if (!utilisateur) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc", color: "#64748b", fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}>
+        Chargement...
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}>

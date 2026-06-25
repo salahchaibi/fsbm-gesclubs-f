@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
+import { getInitialData } from "./ssrData";
 
-const API = `${BACKEND_URL}/api`;
-const STORAGE = `${BACKEND_URL}/storage`;
+const API = "/api";
+const STORAGE = `${APP_URL}/storage`;
 
 const chiffresDefaut = [
   { valeur: 6, label: "Scientifiques & Techniques", desc: "Clubs de sciences et technologies", icon: "🔬" },
@@ -25,7 +26,7 @@ const scrollTo = (id) => {
 };
 
 const Avatar = ({ nom, photo, size = 120, borderColor = "#fff", fontSize }) => {
-  const STORAGE_URL = `${BACKEND_URL}/storage`;
+  const STORAGE_URL = `${APP_URL}/storage`;
   const fs = fontSize || Math.round(size * 0.36);
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", border: `4px solid ${borderColor}`, background: "linear-gradient(135deg, #1a4a8a, #0d2d5e)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -38,6 +39,7 @@ const Avatar = ({ nom, photo, size = 120, borderColor = "#fff", fontSize }) => {
 };
 
 export default function HomePage() {
+  const initialData = getInitialData().home || {};
   const navigate = useNavigate();
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -48,9 +50,9 @@ export default function HomePage() {
   const chiffresRef = useRef(null);
   const intervalRef = useRef(null);
 
-  const [actualites, setActualites] = useState([]);
-  const [loadingActu, setLoadingActu] = useState(true);
-  const [pageContent, setPageContent] = useState(null);
+  const [actualites, setActualites] = useState(Array.isArray(initialData.actualites) ? initialData.actualites : []);
+  const [loadingActu, setLoadingActu] = useState(!Array.isArray(initialData.actualites));
+  const [pageContent, setPageContent] = useState(initialData.pageContent ?? null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -59,6 +61,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (Array.isArray(initialData.actualites)) return;
     fetch(`${API}/actualites`)
       .then(r => r.json())
       .then(data => {
@@ -75,6 +78,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (initialData.pageContent !== undefined) return;
     fetch(`${API}/page-accueil`)
       .then(r => r.json())
       .then(data => { if (data) setPageContent(data); })
@@ -569,7 +573,7 @@ function Connector() {
 }
 
 function OrgCard({ person, badge, badgeColor, niveau }) {
-  const STORAGE_URL = `${BACKEND_URL}/storage`;
+  const STORAGE_URL = `${APP_URL}/storage`;
   const sizes = { top: 120, mid: 100, low: 80 };
   const cardWidths = { top: 300, mid: 270, low: 250 };
   const size = sizes[niveau];
@@ -595,4 +599,3 @@ function OrgCard({ person, badge, badgeColor, niveau }) {
   );
   
 }
-

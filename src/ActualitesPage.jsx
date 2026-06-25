@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
+import { getInitialData } from "./ssrData";
 
-const STORAGE = `${BACKEND_URL}/api`;
-const IMG = `${BACKEND_URL}/storage`;
+const API = `/api`;
+const IMG = `${APP_URL}/storage`;
 
 const CATEGORIES = ["Toutes", "Formation", "Culturel", "Caravane", "Sport", "Workshops", "Événement", "Scientifique"];
 const PER_PAGE = 6;
@@ -24,11 +25,12 @@ const scrollTo = (id) => {
 };
 
 export default function ActualitesPage() {
+  const initialData = getInitialData().actualitesPage || {};
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [categorie, setCategorie] = useState("Toutes");
-  const [actualites, setActualites] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [actualites, setActualites] = useState(Array.isArray(initialData.actualites) ? initialData.actualites : []);
+  const [loading, setLoading] = useState(!Array.isArray(initialData.actualites));
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -54,7 +56,8 @@ export default function ActualitesPage() {
   };
 
   useEffect(() => {
-    fetch(`${STORAGE}/actualites`)
+    if (Array.isArray(initialData.actualites)) return;
+    fetch(`/api/actualites`)
       .then(res => res.json())
       .then(data => {
         setActualites(Array.isArray(data) ? data : data.data || []);

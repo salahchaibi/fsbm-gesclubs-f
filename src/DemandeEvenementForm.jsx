@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
  
-const API = `${BACKEND_URL}/api`;
+const API = "/api";
  
 const iStyle = {
   width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0",
@@ -58,8 +58,6 @@ export default function DemandeEvenementForm({ utilisateur, club }) {
   const afficheRef = useRef();
   const programmeRef = useRef();
  
-  const token = localStorage.getItem("token");
- 
   const toggleBesoin = (b) => {
     setForm(prev => ({
       ...prev,
@@ -90,7 +88,7 @@ export default function DemandeEvenementForm({ utilisateur, club }) {
       if (programme) formData.append("programme", programme);
  
       await axios.post(`${API}/demandes-evenement`, formData, {
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data" },
       });
       setSubmitted(true);
     } catch (e) {

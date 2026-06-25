@@ -15,9 +15,8 @@ export default function LoginPage({ onLogin }) {
     setLoading(true);
     setErreur("");
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/login`, { email, motDePasse });
-      const { token, utilisateur } = res.data;
-      localStorage.setItem("token", token);
+      const res = await axios.post(`/api/login`, { email, motDePasse });
+      const { utilisateur } = res.data;
       onLogin(utilisateur);
       if (utilisateur.role === "administrateur") navigate("/dashboard-admin");
       else navigate("/dashboard");

@@ -17,6 +17,7 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         BACKEND_URL: "readonly",
+        APP_URL: "readonly",
       },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },

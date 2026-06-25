@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/LOGO.png";
+import { getInitialData } from "./ssrData";
 
-const STORAGE = `${BACKEND_URL}/storage`;
+const STORAGE = `${APP_URL}/storage`;
 
 const domaineColor = {
   Scientifique:    { light: "#dde8f7", dark: "#2a5ba5",  grad: "135deg, #2a5ba5, #1a4a8a" },
@@ -18,12 +19,14 @@ const scrollTo = (id) => {
 };
 
 export default function ClubDetail() {
+  const initialData = getInitialData().clubDetail || {};
   const { id } = useParams();
   const navigate = useNavigate();
-  const [club, setClub] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const hasInitial = String(initialData.id) === String(id) && initialData.club;
+  const [club, setClub] = useState(hasInitial ? initialData.club : null);
+  const [loading, setLoading] = useState(!hasInitial);
   const [notFound, setNotFound] = useState(false);
-  const [evenements, setEvenements] = useState([]);
+  const [evenements, setEvenements] = useState(hasInitial ? (initialData.evenements || []) : []);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("apropos");
@@ -58,19 +61,20 @@ export default function ClubDetail() {
   };
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/clubs/${id}`)
+    if (hasInitial) return;
+    fetch(`/api/clubs/${id}`)
       .then(res => { if (!res.ok) { setNotFound(true); setLoading(false); return null; } return res.json(); })
       .then(data => { if (data) { setClub(data); setLoading(false); } })
       .catch(() => { setNotFound(true); setLoading(false); });
 
-    fetch(`${BACKEND_URL}/api/evenements`)
+    fetch(`/api/evenements`)
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : data.data || [];
         setEvenements(list.filter(e => String(e.club_id) === String(id) && e.statut === "valide"));
       })
       .catch(() => setEvenements([]));
-  }, [id]);
+  }, [id, hasInitial]);
 
   const handleJoindre = async (e) => {
     e.preventDefault();
@@ -87,7 +91,7 @@ export default function ClubDetail() {
       fd.append("club_id", id);
       if (carteEtudiant) fd.append("carte_etudiant", carteEtudiant);
 
-      const res = await fetch(`${BACKEND_URL}/api/demandes-adhesion`, {
+      const res = await fetch(`/api/demandes-adhesion`, {
         method: "POST",
         body: fd,
       });
@@ -108,7 +112,7 @@ export default function ClubDetail() {
     e.preventDefault();
     setMsgStatus("loading");
     try {
-      const res = await fetch(`${BACKEND_URL}/api/messages-club`, {
+      const res = await fetch(`/api/messages-club`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...msgForm, club_id: id }),

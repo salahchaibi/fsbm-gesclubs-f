@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
+import { getInitialData } from "./ssrData";
  
-const STORAGE = `${BACKEND_URL}/storage`;
+const STORAGE = `${APP_URL}/storage`;
  
 const DOMAINES = ["Tous", "Scientifique", "Culturel", "Entrepreneuriat", "Humanitaire", "Sport"];
  
@@ -20,9 +21,10 @@ const scrollTo = (id) => {
 };
  
 export default function ClubsPage() {
+  const initialData = getInitialData().clubsPage || {};
   const navigate = useNavigate();
-  const [clubs, setClubs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [clubs, setClubs] = useState(Array.isArray(initialData.clubs) ? initialData.clubs : []);
+  const [loading, setLoading] = useState(!Array.isArray(initialData.clubs));
   const [domaine, setDomaine] = useState("Tous");
   const [search, setSearch] = useState("");
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -50,7 +52,8 @@ export default function ClubsPage() {
   };
  
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/clubs`)
+    if (Array.isArray(initialData.clubs)) return;
+    fetch(`/api/clubs`)
       .then(res => res.json())
       .then(data => { setClubs(Array.isArray(data) ? data : data.data || []); setLoading(false); })
       .catch(() => setLoading(false));

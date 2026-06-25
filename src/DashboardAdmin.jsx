@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DemandeEvenementForm from "./DemandeEvenementForm";
+import { getInitialData } from "./ssrData";
 
-const API = `${BACKEND_URL}/api`;
-const STORAGE = `${BACKEND_URL}/storage`;
+const API = "/api";
+const STORAGE = `${APP_URL}/storage`;
 
 const ROLES_BUREAU = ["Président", "Vice-président", "Secrétaire", "Trésorier", "Responsable Communication", "Responsable Événements", "Membre"];
 
@@ -118,11 +119,12 @@ const responsiveCSS = `
 `;
 
 export default function DashboardAdmin({ utilisateur, onLogout }) {
+  const initialData = getInitialData().dashboardAdmin || {};
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("club");
 
-  const [club, setClub] = useState(null);
-  const [clubForm, setClubForm] = useState({});
+  const [club, setClub] = useState(initialData.club || null);
+  const [clubForm, setClubForm] = useState(initialData.club || {});
   const [clubMsg, setClubMsg] = useState({ text: "", type: "" });
   const [logoFile, setLogoFile] = useState(null);
   const [logoPreview, setLogoPreview] = useState(null);
@@ -131,7 +133,7 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
   const [programmeFichier, setProgrammeFichier] = useState(null);
   const programmeRef = useRef();
 
-  const [evenements, setEvenements] = useState([]);
+  const [evenements, setEvenements] = useState(Array.isArray(initialData.evenements) ? initialData.evenements : []);
   const [evtForm, setEvtForm] = useState({ titre: "", contenu: "", date: "", lieu: "", heure: "" });
   const [evtPhoto, setEvtPhoto] = useState(null);
   const [evtPhotoPreview, setEvtPhotoPreview] = useState(null);
@@ -139,20 +141,21 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
   const [showEvtForm, setShowEvtForm] = useState(false);
   const evtPhotoRef = useRef();
 
-  const [demandes, setDemandes] = useState([]);
+  const [demandes, setDemandes] = useState(Array.isArray(initialData.demandes) ? initialData.demandes : []);
   const [demandesMsg, setDemandesMsg] = useState({ text: "", type: "" });
   const [loadingDemandes, setLoadingDemandes] = useState(false);
 
-  const [membres, setMembres] = useState([]);
+  const [membres, setMembres] = useState(Array.isArray(initialData.membres) ? initialData.membres : []);
   const [membresMsg, setMembresMsg] = useState({ text: "", type: "" });
   const [showMembreForm, setShowMembreForm] = useState(false);
   const [membreForm, setMembreForm] = useState({ nom: "", prenom: "", email: "", role: "Membre actif", est_bureau: false });
 
-  const token = localStorage.getItem("token");
-  const headers = { Authorization: `Bearer ${token}` };
+  const headers = {};
 
   useEffect(() => {
-    if (!utilisateur) { navigate("/login"); return; }
+    if (utilisateur === null) { navigate("/login"); return; }
+    if (!utilisateur) return;
+    if (initialData.club && Array.isArray(initialData.evenements) && Array.isArray(initialData.demandes)) return;
     fetchClub();
     fetchEvenements();
     fetchDemandes();
@@ -328,9 +331,8 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
     setTimeout(() => setMembresMsg({ text: "", type: "" }), 3000);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    onLogout && onLogout();
+  const handleLogout = async () => {
+    await onLogout?.();
     navigate("/login");
   };
 
@@ -361,6 +363,14 @@ export default function DashboardAdmin({ utilisateur, onLogout }) {
   const membresSimples = membres.filter(m => !m.est_bureau);
   const programmeNom = getProgrammeNom();
   const programmeIcon = getProgrammeIcon(programmeFichier?.name || programmeNom);
+
+  if (!utilisateur) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc", color: "#64748b", fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}>
+        Chargement...
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif" }}>
