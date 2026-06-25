@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
+  const backendUrl = process.env.BACKEND_URL || env.BACKEND_URL || ""
 
   return {
     plugins: [
@@ -11,7 +12,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
     ],
     define: {
-      BACKEND_URL: JSON.stringify(env.BACKEND_URL),
+      BACKEND_URL: JSON.stringify(backendUrl),
     },
   }
 })
