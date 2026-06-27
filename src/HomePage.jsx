@@ -167,10 +167,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 72 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <img src={logo} alt="Logo FSBM" style={{ height: 54, objectFit: "contain" }} />
-            <div className="navbar-subtitle" style={{ borderLeft: "2px solid #e2e8f0", paddingLeft: 14 }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: "#0d2d5e", lineHeight: 1.2 }}>Portail Clubs</div>
-              <div style={{ fontSize: 12, color: "#64748b", fontWeight: 500 }}>Faculté des Sciences Ben M'Sik</div>
-            </div>
+            
           </div>
 
           <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -478,65 +475,85 @@ export default function HomePage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{ background: "#0a2548", color: "#94a3b8", padding: "72px 8% 0" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 48, paddingBottom: 56 }}>
-          <div>
-            <img src={logo} alt="FSBM" style={{ height: 48, objectFit: "contain", filter: "brightness(0) invert(1)", marginBottom: 16 }} />
-            <p style={{ fontSize: 14, lineHeight: 1.8, color: "#64748b", margin: "0 0 24px" }}>La FSBM, une faculté qui valorise le talent, la créativité et l'engagement de ses étudiants.</p>
-            <div style={{ display: "flex", gap: 12 }}>
-              {[
-                { href: "https://www.facebook.com/FSBMUH2C", path: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/> },
-                { href: "https://x.com/uh2c_fsbm", path: <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0022.43.36a9 9 0 01-2.88 1.1A4.52 4.52 0 0016.11 0c-2.5 0-4.52 2.02-4.52 4.52 0 .35.04.7.11 1.03C7.69 5.4 4.07 3.6 1.64.9a4.52 4.52 0 00-.61 2.27c0 1.57.8 2.95 2.01 3.76a4.5 4.5 0 01-2.05-.57v.06c0 2.19 1.56 4.02 3.63 4.43a4.55 4.55 0 01-2.04.08 4.53 4.53 0 004.23 3.14A9.07 9.07 0 010 19.54a12.8 12.8 0 006.92 2.03c8.3 0 12.85-6.88 12.85-12.85l-.01-.59A9.17 9.17 0 0023 3z"/> },
-                { href: "https://www.linkedin.com/showcase/fsbmunivh2c/", path: <><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></> },
-              ].map((s, i) => (
-                <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
-                  style={{ width: 38, height: 38, borderRadius: 8, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", transition: "all 0.2s", textDecoration: "none" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(224,123,32,0.15)"; e.currentTarget.style.color = "#e07b20"; e.currentTarget.style.borderColor = "rgba(224,123,32,0.3)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#64748b"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
-                  <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">{s.path}</svg>
-                </a>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Navigation</h4>
-            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-              {[{ label: "Actualités", path: "/actualites" }, { label: "Nos Clubs", path: "/clubs" }, { label: "Contactez-nous", path: "/contact" }].map(item => (
-                <li key={item.label}>
-                  <a href="#" onClick={e => { e.preventDefault(); navigate(item.path); }}
-                    style={{ color: "#64748b", textDecoration: "none", fontSize: 14, display: "flex", alignItems: "center", gap: 8, transition: "color 0.2s" }}
-                    onMouseEnter={e => e.currentTarget.style.color = "#e07b20"}
-                    onMouseLeave={e => e.currentTarget.style.color = "#64748b"}>
-                    <span style={{ color: "#e07b20", fontSize: 8 }}>▶</span>{item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div>
-            <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Contact</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {[
-                { icon: <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>, extra: <circle cx="12" cy="10" r="3"/>, text: "Bd Driss El Harti, Ben M'Sik, Casablanca" },
-                { icon: <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.08 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006.99 6.99l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>, text: "(+212) 6 61 44 24 27" },
-                { icon: <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></>, text: "fsbm.contact@univh2c.ma" },
-              ].map((item, i) => (
-                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <span style={{ color: "#e07b20", flexShrink: 0, marginTop: 2 }}>
-                    <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">{item.icon}{item.extra}</svg>
-                  </span>
-                  <span style={{ fontSize: 13.5, color: "#64748b", lineHeight: 1.6 }}>{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "22px 0", textAlign: "center" }}>
-          <p style={{ margin: 0, fontSize: 13, color: "#334155" }}>© {new Date().getFullYear()} Faculté des Sciences Ben M'Sick</p>
-        </div>
-      </footer>
+     <footer style={{ background: "#0a2548", color: "#94a3b8", padding: "64px 8% 0" }}>
 
+  {/* Top section: logo + nav + contact */}
+  <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr", gap: 48, paddingBottom: 40 }}>
+    <div>
+      <img src={logo} alt="FSBM" style={{ height: 48, objectFit: "contain", filter: "brightness(0) invert(1)", marginBottom: 16 }} />
+      <p style={{ fontSize: 14, lineHeight: 1.8, color: "#64748b", margin: "0 0 24px", maxWidth: 320 }}>La FSBM, une faculté qui valorise le talent, la créativité et l'engagement de ses étudiants.</p>
+      <div style={{ display: "flex", gap: 12 }}>
+        {[
+          { href: "https://www.facebook.com/FSBMUH2C", path: <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/> },
+          { href: "https://x.com/uh2c_fsbm", path: <path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0022.43.36a9 9 0 01-2.88 1.1A4.52 4.52 0 0016.11 0c-2.5 0-4.52 2.02-4.52 4.52 0 .35.04.7.11 1.03C7.69 5.4 4.07 3.6 1.64.9a4.52 4.52 0 00-.61 2.27c0 1.57.8 2.95 2.01 3.76a4.5 4.5 0 01-2.05-.57v.06c0 2.19 1.56 4.02 3.63 4.43a4.55 4.55 0 01-2.04.08 4.53 4.53 0 004.23 3.14A9.07 9.07 0 010 19.54a12.8 12.8 0 006.92 2.03c8.3 0 12.85-6.88 12.85-12.85l-.01-.59A9.17 9.17 0 0023 3z"/> },
+          { href: "https://www.linkedin.com/showcase/fsbmunivh2c/", path: <><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></> },
+        ].map((s, i) => (
+          <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
+            style={{ width: 38, height: 38, borderRadius: 8, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b", transition: "all 0.2s", textDecoration: "none" }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(224,123,32,0.15)"; e.currentTarget.style.color = "#e07b20"; e.currentTarget.style.borderColor = "rgba(224,123,32,0.3)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#64748b"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">{s.path}</svg>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Navigation</h4>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
+        {[{ label: "Actualités", path: "/actualites" }, { label: "Nos Clubs", path: "/clubs" }, { label: "Contactez-nous", path: "/contact" }].map(item => (
+          <li key={item.label}>
+            <a href="#" onClick={e => { e.preventDefault(); navigate(item.path); }}
+              style={{ color: "#64748b", textDecoration: "none", fontSize: 14, display: "flex", alignItems: "center", gap: 8, transition: "color 0.2s" }}
+              onMouseEnter={e => e.currentTarget.style.color = "#e07b20"}
+              onMouseLeave={e => e.currentTarget.style.color = "#64748b"}>
+              <span style={{ color: "#e07b20", fontSize: 8 }}>▶</span>{item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.1em", textTransform: "uppercase", margin: "0 0 20px" }}>Contact</h4>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {[
+          { icon: <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>, extra: <circle cx="12" cy="10" r="3"/>, text: "Bd Driss El Harti, Ben M'Sik, Casablanca" },
+          { icon: <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.08 4.18 2 2 0 015.09 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006.99 6.99l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>, text: "(+212) 6 61 44 24 27" },
+          { icon: <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></>, text: "fsbm.contact@univh2c.ma" },
+        ].map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <span style={{ color: "#e07b20", flexShrink: 0, marginTop: 2 }}>
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">{item.icon}{item.extra}</svg>
+            </span>
+            <span style={{ fontSize: 13.5, color: "#64748b", lineHeight: 1.6 }}>{item.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Knowledge / credits strip — compact single line */}
+  <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "20px 0", fontSize: 12.5, color: "#64748b", lineHeight: 1.8 }}>
+    <span style={{ color: "#e07b20", fontWeight: 700 }}>Réaliser par</span>{" "}
+    Mme. Douaa Naggour et Mme. Hania M'lissa, étudiantes en 3ème année Dev. Info
+    <span style={{ margin: "0 10px", color: "#334155" }}>—</span>
+    <span style={{ color: "#e07b20", fontWeight: 700 }}>Sous direction de </span>{" "}
+    Pr. Hafsa Ouchra et Pr. Mohamed Ait Daoud et Mr. Said Chaibi
+  </div>
+
+  <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "18px 0", textAlign: "center" }}>
+    <p style={{ margin: 0, fontSize: 13, color: "#334155" }}>© {new Date().getFullYear()} Faculté des Sciences Ben M'Sick</p>
+  </div>
+  {/* ✅ RESPONSIVE — Media query via style tag */}
+  <style>{`
+    @media (max-width: 768px) {
+      footer > div:first-child {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  `}</style>
+</footer>
       <style>{`
   @keyframes ddFade { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
   @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
