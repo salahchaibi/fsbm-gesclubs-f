@@ -664,11 +664,10 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
         const imgRes = await axios.post('https://api.imgbb.com/1/upload', imgData);
         imageUrl = imgRes.data?.data?.url || null;
       }
-      const formData = new FormData();
-      Object.entries(actForm).forEach(([k, v]) => { if (v) formData.append(k, v); });
-      if (imageUrl) formData.append('image', imageUrl);
-      if (actEditId) { formData.append("_method", "PUT"); await axios.post(`${API}/actualites/${actEditId}`, formData, { headers }); setActMsg({ text: "Actualité modifiée !", type: "success" }); }
-      else { await axios.post(`${API}/actualites`, formData, { headers }); setActMsg({ text: "Actualité ajoutée !", type: "success" }); }
+      const payload = { ...actForm };
+      if (imageUrl) payload.image = imageUrl;
+      if (actEditId) { await axios.put(`${API}/actualites/${actEditId}`, payload, { headers }); setActMsg({ text: "Actualité modifiée !", type: "success" }); }
+      else { await axios.post(`${API}/actualites`, payload, { headers }); setActMsg({ text: "Actualité ajoutée !", type: "success" }); }
       setModalActualite(null); setActForm({ titre: "", contenu: "", date: "", categorie: "", club_id: "", instagram: "" }); setActEditId(null); setActImage(null); setActImagePreview(null); fetchActualites();
     } catch (e) { setActMsg({ text: "Erreur: " + e.message, type: "error" }); }
     setTimeout(() => setActMsg({ text: "", type: "" }), 3000);
