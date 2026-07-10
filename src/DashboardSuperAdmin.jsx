@@ -663,13 +663,20 @@ export default function DashboardSuperAdmin({ utilisateur, onLogout }) {
 
   const saveActualite = async () => {
     try {
-      const formData = new FormData();
-      Object.entries(actForm).forEach(([k, v]) => { if (v) formData.append(k, v); });
-      if (actImage) formData.append("image", actImage);
-      if (actEditId) { formData.append("_method", "PUT"); await axios.post(`${API}/actualites/${actEditId}`, formData, { headers: { ...headers, "Content-Type": "multipart/form-data" } }); setActMsg({ text: "Actualité modifiée !", type: "success" }); }
-      else { await axios.post(`${API}/actualites`, formData, { headers: { ...headers, "Content-Type": "multipart/form-data" } }); setActMsg({ text: "Actualité ajoutée !", type: "success" }); }
+      let imageUrl = null;
+      if (actImage) {
+        const imgData = new FormData();
+        imgData.append('key', '8c20242510156f5d610357aed4d8f893');
+        imgData.append('image', actImage);
+        const imgRes = await axios.post('https://api.imgbb.com/1/upload', imgData);
+        imageUrl = imgRes.data?.data?.url || null;
+      }
+      const payload = { ...actForm };
+      if (imageUrl) payload.image = imageUrl;
+      if (actEditId) { await axios.put(`${API}/actualites/${actEditId}`, payload, { headers }); setActMsg({ text: "Actualité modifiée !", type: "success" }); }
+      else { await axios.post(`${API}/actualites`, payload, { headers }); setActMsg({ text: "Actualité ajoutée !", type: "success" }); }
       setModalActualite(null); setActForm({ titre: "", contenu: "", date: "", categorie: "", club_id: "", instagram: "" }); setActEditId(null); setActImage(null); setActImagePreview(null); fetchActualites();
-    } catch { setActMsg({ text: "Erreur.", type: "error" }); }
+    } catch (e) { setActMsg({ text: "Erreur: " + e.message, type: "error" }); }
     setTimeout(() => setActMsg({ text: "", type: "" }), 3000);
   };
   const supprimerActualite = async (id) => { if (!window.confirm("Supprimer ?")) return; try { await axios.delete(`${API}/actualites/${id}`, { headers }); fetchActualites(); } catch { alert("Erreur."); } };
