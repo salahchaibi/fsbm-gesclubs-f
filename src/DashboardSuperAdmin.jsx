@@ -4,7 +4,7 @@ import axios from "axios";
 import { getInitialData } from "./ssrData";
 
 const API = "/api";
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
 
 const iStyle = {
   width: "100%", padding: "10px 14px", border: "1.5px solid #e2e8f0",

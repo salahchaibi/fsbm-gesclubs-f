@@ -4,7 +4,7 @@ import logo from "./assets/LOGO.png";
 import { getInitialData } from "./ssrData";
 
 const API = "/api";
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);

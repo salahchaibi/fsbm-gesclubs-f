@@ -4,7 +4,7 @@ import logo from "./assets/LOGO.png";
 import { getInitialData } from "./ssrData";
 
 const API = `/api`;
-const IMG = `${APP_URL}/storage`;
+const IMG = "/storage";
 
 const CATEGORIES = ["Toutes", "Formation", "Culturel", "Caravane", "Sport", "Workshops", "Événement", "Scientifique"];
 const PER_PAGE = 6;

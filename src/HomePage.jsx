@@ -4,7 +4,7 @@ import logo from "./assets/LOGO.png";
 import { getInitialData } from "./ssrData";
 
 const API = "/api";
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
 
 const chiffresDefaut = [
   { valeur: 6, label: "Scientifiques & Techniques", desc: "Clubs de sciences et technologies", icon: "🔬" },
@@ -26,7 +26,7 @@ const scrollTo = (id) => {
 };
 
 const Avatar = ({ nom, photo, size = 120, borderColor = "#fff", fontSize }) => {
-  const STORAGE_URL = `${APP_URL}/storage`;
+  const STORAGE_URL = "/storage";
   const fs = fontSize || Math.round(size * 0.36);
   return (
     <div style={{ width: size, height: size, borderRadius: "50%", overflow: "hidden", border: `4px solid ${borderColor}`, background: "linear-gradient(135deg, #1a4a8a, #0d2d5e)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -590,7 +590,7 @@ function Connector() {
 }
 
 function OrgCard({ person, badge, badgeColor, niveau }) {
-  const STORAGE_URL = `${APP_URL}/storage`;
+  const STORAGE_URL = "/storage";
   const sizes = { top: 120, mid: 100, low: 80 };
   const cardWidths = { top: 300, mid: 270, low: 250 };
   const size = sizes[niveau];

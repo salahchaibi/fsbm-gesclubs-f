@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 import { getInitialData } from "./ssrData";
 
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
 
 const domaineColor = {
   Scientifique:    { light: "#dde8f7", dark: "#2a5ba5",  grad: "135deg, #2a5ba5, #1a4a8a" },

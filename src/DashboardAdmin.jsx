@@ -5,7 +5,7 @@ import DemandeEvenementForm from "./DemandeEvenementForm";
 import { getInitialData } from "./ssrData";
 
 const API = "/api";
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
 
 const ROLES_BUREAU = ["Président", "Vice-président", "Secrétaire", "Trésorier", "Responsable Communication", "Responsable Événements", "Membre"];
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "./assets/LOGO.png";
 import { getInitialData } from "./ssrData";
  
-const STORAGE = `${APP_URL}/storage`;
+const STORAGE = "/storage";
  
 const DOMAINES = ["Tous", "Scientifique", "Culturel", "Entrepreneuriat", "Humanitaire", "Sport"];
  
